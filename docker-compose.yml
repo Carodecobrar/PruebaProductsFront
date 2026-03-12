@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  vue-frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: vue-frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - VITE_API_PRODUCTS_URL=/api
+      - VITE_API_INVENTORY_URL=/inventory
+    networks:
+      - microservices-net
+
+networks:
+  microservices-net:
+    external: true
+    name: microservices-net

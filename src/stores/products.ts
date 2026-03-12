@@ -70,12 +70,12 @@ export const useProductsStore = defineStore('products', {
     // Listar productos con filtros y caché
     async fetchProducts(params: any = {}) {
       // Verificar caché
-      const paramsKey = JSON.stringify(params)
+      /*const paramsKey = JSON.stringify(params)
       if (this.isProductsCacheValid &&
           JSON.stringify(this.cache.products.params) === paramsKey) {
         this.products = this.cache.products.data || []
         return
-      }
+      }*/
 
       this.loading = true
       this.error = null

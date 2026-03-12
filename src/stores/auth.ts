@@ -1,17 +1,10 @@
 import { defineStore } from 'pinia'
-import axios from 'axios'
-
-interface User {
-  email: string
-  role: string
-}
-
-const API_PRODUCTS_URL = import.meta.env.VITE_API_PRODUCTS_URL || '/api'
+import { apiProducts } from '../services/api'  // ← Usa el mismo cliente
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
     token: localStorage.getItem('token') || null,
-    user: JSON.parse(localStorage.getItem('user') || 'null') as User | null
+    user: JSON.parse(localStorage.getItem('user') || 'null')
   }),
 
   getters: {
@@ -22,7 +15,8 @@ export const useAuthStore = defineStore('auth', {
   actions: {
     async login(email: string, password: string) {
       try {
-        const response = await axios.post(`${API_PRODUCTS_URL}/auth/login`, {
+        // Usa apiProducts para login (el interceptor no agregará token)
+        const response = await apiProducts.post('/auth/login', {
           email,
           password
         })

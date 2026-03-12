@@ -132,18 +132,6 @@ export const useProductsStore = defineStore('products', {
       }
     },
 
-    // Obtener inventario
-    async fetchInventory(productId: string) {
-      try {
-        const response = await apiInventory.get(`/inventory/${productId}`)
-        this.currentInventory = response.data.data[0].attributes
-        return this.currentInventory
-      } catch (error) {
-        console.error('Error al obtener inventario:', error)
-        return null
-      }
-    },
-
     // Realizar compra (con idempotencia)
     async purchase(productId: string, quantity: number) {
       this.purchasing = true
@@ -163,9 +151,6 @@ export const useProductsStore = defineStore('products', {
           productId,
           quantity
         }
-
-        // Actualizar inventario después de compra exitosa
-        await this.fetchInventory(productId)
 
         return { success: true, data: response.data }
       } catch (error: any) {

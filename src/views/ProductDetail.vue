@@ -128,23 +128,7 @@ const showModal = ref(false)
 onMounted(async () => {
   const id = route.params.id as string
   product.value = await store.fetchProductById(id)
-  await loadInventory()
 })
-
-const loadInventory = async () => {
-  if (!product.value) return
-
-  inventoryLoading.value = true
-  inventoryError.value = false
-
-  try {
-    inventory.value = await store.fetchInventory(product.value.id)
-  } catch (error) {
-    inventoryError.value = true
-  } finally {
-    inventoryLoading.value = false
-  }
-}
 
 const openPurchaseModal = () => {
   showModal.value = true
@@ -160,7 +144,6 @@ const handlePurchase = async (quantity: number) => {
   if (result.success) {
     alert(`✅ Compra exitosa!\nProducto: ${product.value.name}\nCantidad: ${quantity}`)
     closeModal()
-    await loadInventory() // Actualizar inventario
   } else {
     closeModal()
   }
@@ -168,7 +151,6 @@ const handlePurchase = async (quantity: number) => {
 
 const retryPurchase = async () => {
   await store.retryPurchase()
-  await loadInventory()
 }
 
 const logout = () => {
